@@ -1,0 +1,193 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret lat_home
+  longitude: !secret long_home
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 57
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: !secret time_zone
+  # Customization file
+  customize: !include customize.yaml
+
+zone:
+  - name: Work
+    latitude: !secret lat_work
+    longitude: !secret long_work
+
+# Show links to resources in log and frontend
+#introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+   api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+   reporting: false
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+binary_sensor:
+  # Flic bluetooth buttons
+  - platform: flic
+
+# Sensors
+sensor:
+  # Pi CPU Temperature
+  - platform: command_line
+    name: CPU Temperature
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+  # Crime reports, uses Home as location
+  - platform: crimereports
+    name: crimereports
+    radius: 1605
+  # Weather - open weather map
+  - platform: openweathermap
+    api_key: !secret key_omw
+    monitored_conditions:
+      - weather
+      - temperature
+      - wind_speed
+      - humidity
+      - clouds
+  # Waze travel time from Home to Work
+  - platform: waze_travel_time
+    origin: !secret address_home
+    destination: !secret address_work
+    region: 'US'
+    incl_filter: !secret waze_include
+    excl_filter: !secret waze_exclude
+  # Home Assistant update checker
+  - platform: rest
+    resource: https://pypi.python.org/pypi/homeassistant/json
+    name: HA upstream
+    value_template: '{{ value_json.info.version }}'
+    scan_interval: 3600
+  # Xiaomi humidity and temp sensor
+  # Disabled, currently throws polling errors
+#  - platform: mitemp_bt
+#    mac: !secret mac_sensor_xiaomi
+#    monitored_conditions:
+#      - temperature
+#      - humidity
+#      - battery
+
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+# cloud:
+
+device_tracker:
+  # Bluetooth device tracker
+  - platform: bluetooth_tracker
+    new_device_defaults:
+      track_new_devices: False
+
+notify:
+  - platform: hangouts
+    name: hangouts
+    default_conversations:
+      - id: !secret conv_me
+
+wemo:
+  static:
+    - !secret ip_wemo
+
+# Control lights via Google Hangouts
+# Listen for phrases
+# TODO: make dynamic
+hangouts:
+  intents:
+    BedroomOff:
+      sentences:
+        - Turn the bedroom lights off
+        - Bedroom lights off
+        - Bedroom off
+      conversations:
+        - id: !secret conv_me
+    BedroomOn:
+      sentences:
+        - Turn the bedroom lights on
+        - Bedroom lights on
+        - Bedroom on
+      conversations:
+        - id: !secret conv_me
+    BedroomPercent:
+      sentences:
+        - Set the bedroom lights to {percent}%
+        - Set the bedroom lights to {percent}
+        - Bedroom lights {percent}%
+        - Bedroom lights {percent}
+        - Bedroom {percent}%
+        - Bedroom {percent}
+      conversations:
+        - id: !secret conv_me
+
+# Respond to phrases
+# TODO: make dynamic
+intent_script:
+  BedroomOff:
+    action:
+    - service: light.turn_off
+      data:
+        entity_id: light.bedroom
+    - service: notify.hangouts
+      data:
+        message: 'Turning off bedroom lights!'
+  BedroomOn:
+    action:
+    - service: light.turn_on
+      data:
+        entity_id: light.bedroom
+    - service: notify.hangouts
+      data:
+        message: 'Turning on bedroom lights!'
+  BedroomPercent:
+    action:
+    - service: light.turn_on
+      data:
+        entity_id: light.bedroom
+        brightness: '{{ percent }}'
+    - service: notify.hangouts
+      data:
+        message: 'Bedroom lights set to {{ percent }}%!'
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml

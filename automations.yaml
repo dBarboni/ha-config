@@ -1,0 +1,54 @@
+# Notify me when Raspberry Pi CPU temperature gets hot
+- id: '1533474577544'
+  alias: Notify CPU hot
+  trigger:
+  - above: '59'
+    entity_id: sensor.cpu_temperature
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Raspberry Pi CPU temperature is {{ states.sensor.cpu_temperature.state
+        }} C
+    service: notify.hangouts
+# Notify me when it will take long to get to work
+- id: '1533600406169'
+  alias: Work travel time long
+  trigger:
+  - above: '25'
+    entity_id: sensor.waze_travel_time
+    platform: numeric_state
+  condition:
+  - after: 07:00:00
+    before: 08:30:00
+    condition: time
+  action:
+  - data:
+      message: Travel time to work is {{ states.sensor.waze_travel_time.state }} minutes
+        via {{ states.sensor.waze_travel_time.attributes.route }}!
+    service: notify.hangouts
+# Toggle bedroom lights when Flic button pressed
+- id: '1533780320627'
+  alias: Flic toggle lights
+  trigger:
+  - event_data:
+      button_name: !secret flic_bedroom
+      click_type: single
+    event_type: flic_click
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: light.bedroom
+    service: light.toggle
+# Notify me when new Home Assistant version is available
+- id: f34dbc9eee8d490496498252c7098324
+  alias: Update Available Notifications
+  trigger:
+  - entity_id: sensor.ha_upstream
+    platform: state
+  action:
+  - data:
+      message: Home Assistant version {{ states.sensor.ha_upstream.state }} is available.
+    service: notify.hangouts
+  initial_state: 'on'
