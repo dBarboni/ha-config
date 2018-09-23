@@ -136,26 +136,17 @@ hangouts:
   intents:
     BedroomOff:
       sentences:
-        - Turn the bedroom lights off
         - Bedroom lights off
-        - Bedroom off
       conversations:
         - id: !secret conv_me
     BedroomOn:
       sentences:
-        - Turn the bedroom lights on
         - Bedroom lights on
-        - Bedroom on
       conversations:
         - id: !secret conv_me
     BedroomPercent:
       sentences:
-        - Set the bedroom lights to {percent}%
-        - Set the bedroom lights to {percent}
         - Bedroom lights {percent}%
-        - Bedroom lights {percent}
-        - Bedroom {percent}%
-        - Bedroom {percent}
       conversations:
         - id: !secret conv_me
 
@@ -181,11 +172,11 @@ intent_script:
   BedroomPercent:
     action:
     - service: light.turn_on
-      data:
+      data_template:
         entity_id: light.bedroom
-        brightness: '{{ percent }}'
+        brightness_pct: "{{ percent }}"
     - service: notify.hangouts
-      data:
+      data_template:
         message: 'Bedroom lights set to {{ percent }}%!'
 
 group: !include groups.yaml
