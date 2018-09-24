@@ -97,6 +97,8 @@ sensor:
     name: HA upstream
     value_template: '{{ value_json.info.version }}'
     scan_interval: 3600
+  # Current home assistant version
+  - platform: version
   # Xiaomi humidity and temp sensor
   # Disabled, currently throws polling errors
 #  - platform: mitemp_bt
@@ -129,7 +131,7 @@ wemo:
   static:
     - !secret ip_wemo
 
-# Control lights via Google Hangouts
+# Control HA via Google Hangouts
 # Listen for phrases
 # TODO: make dynamic
 hangouts:
@@ -149,6 +151,11 @@ hangouts:
         - Bedroom lights {percent}%
       conversations:
         - id: !secret conv_me
+    HAVersion:
+      sentences:
+        - HA version
+        - HASS version
+        - Home Assistant version
 
 # Respond to phrases
 # TODO: make dynamic
@@ -178,6 +185,11 @@ intent_script:
     - service: notify.hangouts
       data_template:
         message: 'Bedroom lights set to {{ percent }}%!'
+  HAVersion:
+    action:
+    - service: notify.hangouts
+      data_template:
+        message: 'Your Home Assistant version is {{ states.sensor.current_version.state }}'
 
 group: !include groups.yaml
 automation: !include automations.yaml
