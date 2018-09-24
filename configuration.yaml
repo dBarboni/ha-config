@@ -133,22 +133,16 @@ wemo:
 
 # Control HA via Google Hangouts
 # Listen for phrases
-# TODO: make dynamic
 hangouts:
   intents:
-    BedroomOff:
+    LightsOnOff:
       sentences:
-        - Bedroom lights off
+        - "{room} lights {onoff}"
       conversations:
         - id: !secret conv_me
-    BedroomOn:
+    LightsPercent:
       sentences:
-        - Bedroom lights on
-      conversations:
-        - id: !secret conv_me
-    BedroomPercent:
-      sentences:
-        - Bedroom lights {percent}%
+        - "{room} lights {percent}%"
       conversations:
         - id: !secret conv_me
     HAVersion:
@@ -158,33 +152,24 @@ hangouts:
         - Home Assistant version
 
 # Respond to phrases
-# TODO: make dynamic
 intent_script:
-  BedroomOff:
+  LightsOnOff:
     action:
-    - service: light.turn_off
-      data:
-        entity_id: light.bedroom
+    - service_template: light.turn_{{ onoff }}
+      data_template:
+        entity_id: light.{{ room }}
     - service: notify.hangouts
-      data:
-        message: 'Turning off bedroom lights!'
-  BedroomOn:
-    action:
-    - service: light.turn_on
-      data:
-        entity_id: light.bedroom
-    - service: notify.hangouts
-      data:
-        message: 'Turning on bedroom lights!'
-  BedroomPercent:
+      data_template:
+        message: 'Turning {{ onoff }} {{ room }} lights!'
+  LightsPercent:
     action:
     - service: light.turn_on
       data_template:
-        entity_id: light.bedroom
+        entity_id: light.{{ room }}
         brightness_pct: "{{ percent }}"
     - service: notify.hangouts
       data_template:
-        message: 'Bedroom lights set to {{ percent }}%!'
+        message: '{{ room }} lights set to {{ percent }}%!'
   HAVersion:
     action:
     - service: notify.hangouts
