@@ -43,6 +43,11 @@
   trigger:
   - entity_id: sensor.ha_upstream
     platform: state
+  condition:
+  - condition: template
+    value_template: "{{ states.sensor.ha_upstream.state != 'unavailable' }}"
+  - condition: template
+    value_template: "{{ states.sensor.ha_upstream.state != states.sensor.current_version.state  }}"
   action:
   - data:
       message: 'Home Assistant version {{ states.sensor.ha_upstream.state }} is available:
