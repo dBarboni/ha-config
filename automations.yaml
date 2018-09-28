@@ -29,7 +29,7 @@
   alias: Flic toggle lights
   trigger:
   - event_data:
-      button_name: !secret flic_bedroom
+      button_name: flic_80e4da704209
       click_type: single
     event_type: flic_click
     platform: event
@@ -45,9 +45,9 @@
     platform: state
   condition:
   - condition: template
-    value_template: "{{ states.sensor.ha_upstream.state != 'unavailable' }}"
+    value_template: '{{ states.sensor.ha_upstream.state != ''unavailable'' }}'
   - condition: template
-    value_template: "{{ states.sensor.ha_upstream.state != states.sensor.current_version.state  }}"
+    value_template: '{{ states.sensor.ha_upstream.state != states.sensor.current_version.state  }}'
   action:
   - data:
       message: 'Home Assistant version {{ states.sensor.ha_upstream.state }} is available:
@@ -55,3 +55,12 @@
         }}'
     service: notify.hangouts
   initial_state: 'on'
+- id: '1538098903785'
+  alias: Notify crime report
+  trigger:
+    - platform: event
+      event_type: crimereports_incident
+  action:
+    - service: notify.hangouts
+      data_template:
+        message: "{{ trigger.event.data.type }} occured at {{ trigger.event.data.location }} at {{ trigger.event.data.timestamp }}. {{ trigger.event.data.description }}."
