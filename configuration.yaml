@@ -71,10 +71,10 @@ sensor:
     command: "cat /sys/class/thermal/thermal_zone0/temp"
     unit_of_measurement: "°C"
     value_template: '{{ value | multiply(0.001) | round(1) }}'
-  # Crime reports, uses Home as location
+  # Crime reports within 2 miles of Home
   - platform: crimereports
     name: crimereports
-    radius: 1605
+    radius: 3218
   # Weather - open weather map
   - platform: openweathermap
     api_key: !secret key_omw
@@ -100,13 +100,14 @@ sensor:
   # Current home assistant version
   - platform: version
   # Xiaomi humidity and temp sensor
-  # Disabled, currently throws polling errors
-#  - platform: mitemp_bt
-#    mac: !secret mac_sensor_xiaomi
-#    monitored_conditions:
-#      - temperature
-#      - humidity
-#      - battery
+  - platform: mitemp_bt
+    name: Bedroom Sensor
+    mac: !secret mac_sensor_xiaomi
+    adapter: hci1
+    monitored_conditions:
+      - temperature
+      - humidity
+      - battery
 
 # Text to speech
 tts:
