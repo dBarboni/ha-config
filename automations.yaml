@@ -58,9 +58,22 @@
 - id: '1538098903785'
   alias: Notify crime report
   trigger:
-    - platform: event
-      event_type: crimereports_incident
+  - platform: event
+    event_type: crimereports_incident
   action:
-    - service: notify.hangouts
-      data_template:
-        message: "{{ trigger.event.data.type }} occured at {{ trigger.event.data.location }} at {{ trigger.event.data.timestamp }}. {{ trigger.event.data.description }}."
+  - service: notify.hangouts
+    data_template:
+      message: '{{ trigger.event.data.type }} occured at {{ trigger.event.data.location
+        }} at {{ trigger.event.data.timestamp }}. {{ trigger.event.data.description
+        }}.'
+- id: '1538356904227'
+  alias: Notify humidity high
+  trigger:
+  - above: '65'
+    entity_id: sensor.basement_sensor_humidity
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: 'Basement humidity is {{ states.sensor.basement_sensor_humidity.state }}%! Check the dehumidifier.'
+    service: notify.hangouts
