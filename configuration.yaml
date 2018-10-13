@@ -101,8 +101,9 @@ sensor:
   - platform: version
   # Xiaomi humidity and temp sensor
   - platform: mitemp_bt
-    name: Bedroom Sensor
+    name: Basement Sensor
     mac: !secret mac_sensor_xiaomi
+    median: 3
     adapter: hci1
     monitored_conditions:
       - temperature
@@ -176,6 +177,16 @@ intent_script:
     - service: notify.hangouts
       data_template:
         message: 'Your Home Assistant version is {{ states.sensor.current_version.state }}'
+
+# Shell commands
+# TODO: figure out why blink1-tool not executing without full path
+shell_command:
+  # Blink1 flash red
+  blink1_flash_red: /home/pi/bin/blink1-tool --red --blink 5
+  # Blink1 steady red
+  blink1_red: /home/pi/bin/blink1-tool --red
+  # Blink1 off
+  blink1_off: /home/pi/bin/blink1-tool --off
 
 group: !include groups.yaml
 automation: !include automations.yaml

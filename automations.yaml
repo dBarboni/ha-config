@@ -77,3 +77,4 @@
   - data:
       message: 'Basement humidity is {{ states.sensor.basement_sensor_humidity.state }}%! Check the dehumidifier.'
     service: notify.hangouts
+  - service: shell_command.blink1_flash_red
