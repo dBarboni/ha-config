@@ -1,0 +1,41 @@
+- alias: Flic bedroom lights on
+  trigger:
+  - event_data:
+      button_name: !secret flic_bedroom
+      click_type: single
+    event_type: flic_click
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: light.bedroom
+      brightness_pct: 100
+    service: light.turn_on
+- alias: Flic bedroom lights off
+  trigger:
+  - event_data:
+      button_name: !secret flic_bedroom
+      click_type: hold
+    event_type: flic_click
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: light.bedroom
+    service: light.turn_off
+- alias: Flic bedroom nightlight
+  trigger:
+  - event_data:
+      button_name: !secret flic_bedroom
+      click_type: double
+    event_type: flic_click
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: light.desk, light.wall
+    service: light.turn_off
+  - data:
+      entity_id: light.ceiling
+      brightness_pct: 1
+    service: light.turn_on

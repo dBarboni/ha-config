@@ -1,0 +1,62 @@
+- alias: Notify CPU hot
+  trigger:
+  - above: '59'
+    entity_id: sensor.cpu_temperature
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Raspberry Pi CPU temperature is {{ states.sensor.cpu_temperature.state
+        }} C
+    service: notify.hangouts
+- alias: Notify work travel time long
+  trigger:
+  - above: '25'
+    entity_id: sensor.waze_travel_time
+    platform: numeric_state
+  condition:
+  - after: 07:00:00
+    before: 08:30:00
+    condition: time
+  action:
+  - data:
+      message: Travel time to work is {{ states.sensor.waze_travel_time.state }} minutes
+        via {{ states.sensor.waze_travel_time.attributes.route }}!
+    service: notify.hangouts
+- alias: Notify Home Assistant update available
+  trigger:
+  - entity_id: sensor.ha_upstream
+    platform: state
+  condition:
+  - condition: template
+    value_template: '{{ states.sensor.ha_upstream.state != ''unavailable'' }}'
+  - condition: template
+    value_template: '{{ states.sensor.ha_upstream.state != states.sensor.current_version.state  }}'
+  action:
+  - data:
+      message: 'Home Assistant version {{ states.sensor.ha_upstream.state }} is available:
+        https://github.com/home-assistant/home-assistant/releases/tag/{{ states.sensor.ha_upstream.state
+        }}'
+    service: notify.hangouts
+  initial_state: 'on'
+- alias: Notify crime report
+  trigger:
+  - platform: event
+    event_type: crimereports_incident
+  action:
+  - service: notify.hangouts
+    data_template:
+      message: '{{ trigger.event.data.type }} occured at {{ trigger.event.data.location
+        }} at {{ trigger.event.data.timestamp }}. {{ trigger.event.data.description
+        }}.'
+- alias: Notify humidity high
+  trigger:
+  - above: '65'
+    entity_id: sensor.basement_sensor_humidity
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: 'Basement humidity is {{ states.sensor.basement_sensor_humidity.state }}%! Check the dehumidifier.'
+    service: notify.hangouts
+  - service: shell_command.blink1_flash_red
