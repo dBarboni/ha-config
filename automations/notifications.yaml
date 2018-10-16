@@ -1,3 +1,4 @@
+# Notify hangouts when Raspberry Pi CPU temperature goes above 59C
 - alias: Notify CPU hot
   trigger:
   - above: '59'
@@ -9,6 +10,7 @@
       message: Raspberry Pi CPU temperature is {{ states.sensor.cpu_temperature.state
         }} C
     service: notify.hangouts
+# Notify hangouts when Waze reports work travel time will be longer than 25 min
 - alias: Notify work travel time long
   trigger:
   - above: '25'
@@ -23,6 +25,7 @@
       message: Travel time to work is {{ states.sensor.waze_travel_time.state }} minutes
         via {{ states.sensor.waze_travel_time.attributes.route }}!
     service: notify.hangouts
+# Notify hangouts when Home Assistant update is available
 - alias: Notify Home Assistant update available
   trigger:
   - entity_id: sensor.ha_upstream
@@ -39,6 +42,7 @@
         }}'
     service: notify.hangouts
   initial_state: 'on'
+# Notify hangouts when crime reported within 2 miles of home
 - alias: Notify crime report
   trigger:
   - platform: event
@@ -49,6 +53,7 @@
       message: '{{ trigger.event.data.type }} occured at {{ trigger.event.data.location
         }} at {{ trigger.event.data.timestamp }}. {{ trigger.event.data.description
         }}.'
+# Notify hangouts when Xiaomi humidity sensor reports above 65%
 - alias: Notify humidity high
   trigger:
   - above: '65'
@@ -60,3 +65,13 @@
       message: 'Basement humidity is {{ states.sensor.basement_sensor_humidity.state }}%! Check the dehumidifier.'
     service: notify.hangouts
   - service: shell_command.blink1_flash_red
+# Notify hangouts when Xiaomi humidity sensor battery drops below 20%
+- alias: Notify humidity sensor battery low
+  trigger:
+  - below: '20'
+    entity_id: sensor.basement_sensor_battery
+    platform: numeric_state
+  action:
+  - data:
+      message: 'Basement sensor battery is at {{ states.sensor.basement_sensor_battery.state }}%. Change the battery soon.'
+    service: notify.hangouts
