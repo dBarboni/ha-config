@@ -109,13 +109,39 @@ sensor:
       - temperature
       - humidity
       - battery
+  # Monitor sd card space
+ # - platform: systemmonitor
+ #   resources:
+ #     - type: disk_use
 
 # Text to speech
 tts:
   - platform: google
 
+# Enable Alexa
+alexa:
+
 # Cloud
-# cloud:
+# Configure sensors available to Alexa
+cloud:
+  alexa:
+    filter:
+      include_entities:
+        - sensor.basement_sensor_humidity
+        - sensor.basement_sensor_temperature
+        - sensor.waze_travel_time
+      include_domains:
+        - sensor
+    entity_config:
+      sensor.basement_sensor_humidity:
+        name: Basement humidity
+        description: Basement humidity sensor
+      sensor.basement_sensor_temperature:
+        name: Basement temperature
+        description: Basement temperature sensor
+      sensor.waze_travel_time:
+        name: Work travel time
+        description: Waze travel time to work
 
 device_tracker:
   # Bluetooth device tracker
