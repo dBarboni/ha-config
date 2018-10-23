@@ -91,6 +91,26 @@ sensor:
     region: 'US'
     incl_filter: !secret waze_include
     excl_filter: !secret waze_exclude
+  # Desktop hardware monitor - cpu temp
+  - platform: rest
+    name: Desktop CPU temp
+    resource: !secret ip_desktop
+    value_template: >-
+      {% for state in value_json -%}
+        {% if state.SensorName == "CPU Package" and state.SensorClass == "CPU [#0]: Intel Core i7-4790K: DTS" %}
+          {{ state.SensorValue }}
+        {% endif %}
+      {%- endfor -%}
+  # Desktop hardware monitor - gpu temp
+  - platform: rest
+    name: Desktop GPU temp
+    resource: !secret ip_desktop
+    value_template: >-
+      {% for state in value_json -%}
+        {% if state.SensorName == "GPU Temperature" %}
+          {{ state.SensorValue }}
+        {% endif %}
+      {%- endfor -%}
   # Home Assistant update checker
   - platform: rest
     resource: https://pypi.python.org/pypi/homeassistant/json
