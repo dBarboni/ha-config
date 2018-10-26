@@ -1,0 +1,36 @@
+title: Lovelace UI test
+
+# Background
+background: #2B2B2B
+
+# Define tabs
+views:
+    # Main tab
+  - title: Main
+    # Define cards for tab
+    cards:
+      - type: gauge
+        title: Basement humidity
+        entity: sensor.basement_sensor_humidity
+        min: 0
+        max: 100
+        severity:
+          green: 0
+          yellow: 55
+          red: 65
+      - type: gauge
+        title: Basement sensor battery
+        entity: sensor.basement_sensor_battery
+        severity:
+          green: 66
+          yellow: 33
+          red: 0
+      - type: sensor
+        title: CPU Temp
+        entity: sensor.cpu_temperature
+      - type: glance
+        title: Bedroom
+        entities:
+          - light.desk
+          - light.ceiling
+          - light.wall
