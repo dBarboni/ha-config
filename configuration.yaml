@@ -168,6 +168,7 @@ device_tracker:
   - platform: bluetooth_tracker
     new_device_defaults:
       track_new_devices: False
+  - platform: owntracks
 
 notify:
   - platform: hangouts
@@ -233,6 +234,12 @@ shell_command:
   blink1_red: /home/pi/bin/blink1-tool --red
   # Blink1 off
   blink1_off: /home/pi/bin/blink1-tool --off
+
+mqtt:
+  broker: !secret mqtt_server
+  port: !secret mqtt_port
+  username: !secret mqtt_user
+  password: !secret mqtt_pass
 
 group: !include groups.yaml
 automation: !include_dir_merge_list automations
