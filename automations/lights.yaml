@@ -1,5 +1,6 @@
 # Turn bedroom lights on 100% when Flic button single pressed
 - alias: Flic bedroom lights on
+  initial_state: on
   trigger:
   - event_data:
       button_name: !secret flic_bedroom
@@ -14,6 +15,7 @@
     service: light.turn_on
 # Turn bedroom lights off when Flic button long pressed
 - alias: Flic bedroom lights off
+  initial_state: on
   trigger:
   - event_data:
       button_name: !secret flic_bedroom
@@ -27,6 +29,7 @@
     service: light.turn_off
 # Turn bedroom lights down when Flic button double pressed
 - alias: Flic bedroom nightlight
+  initial_state: on
   trigger:
   - event_data:
       button_name: !secret flic_bedroom
