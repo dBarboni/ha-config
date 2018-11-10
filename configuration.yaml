@@ -169,6 +169,7 @@ device_tracker:
     new_device_defaults:
       track_new_devices: False
   - platform: owntracks
+    secret: !secret owntracks_payload
 
 notify:
   - platform: hangouts
