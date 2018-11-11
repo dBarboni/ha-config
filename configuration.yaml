@@ -93,6 +93,26 @@ sun:
 binary_sensor:
   # Flic bluetooth buttons
   - platform: flic
+  # Bayesian sensor for presence
+  - platform: bayesian
+    prior: 0.5
+    probability_threshold: 0.9
+    observations:
+      - entity_id: !secret dan_phone_owntracks
+        prob_given_true: 0.9
+        prob_given_false: 0.4
+        platform: 'state'
+        to_state: 'home'
+      - entity_id: !secret dan_phone_bt
+        prob_given_true: 0.9
+        prob_given_false: 0.1
+        platform: 'state'
+        to_state: 'home'
+      - entity_id: !secret dan_phone_nmap
+        prob_given_true: 0.9
+        prob_given_false: 0.1
+        platform: 'state'
+        to_state: 'home'
 
 # Sensors
 sensor:
@@ -199,8 +219,14 @@ device_tracker:
   - platform: bluetooth_tracker
     new_device_defaults:
       track_new_devices: False
+  # Owntracks from mqtt
   - platform: owntracks
     secret: !secret owntracks_payload
+  # Network devices
+  - platform: nmap_tracker
+    hosts: 192.168.1.0/24
+    new_device_defaults:
+      track_new_devices: False
 
 notify:
   - platform: hangouts
