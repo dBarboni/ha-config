@@ -113,6 +113,8 @@ binary_sensor:
         prob_given_false: 0.1
         platform: 'state'
         to_state: 'home'
+  - platform: uptimerobot
+    api_key: !secret key_uptime
 
 # Sensors
 sensor:
@@ -180,10 +182,6 @@ sensor:
       - temperature
       - humidity
       - battery
-  # Monitor sd card space
- # - platform: systemmonitor
- #   resources:
- #     - type: disk_use
 
 # Text to speech
 tts:
