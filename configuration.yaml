@@ -257,6 +257,8 @@ hangouts:
         - HA version
         - HASS version
         - Home Assistant version
+      conversations:
+        - id: !secret conv_me
 
 # Respond to phrases
 intent_script:
