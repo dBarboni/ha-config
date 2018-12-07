@@ -223,10 +223,6 @@ device_tracker:
   - platform: bluetooth_tracker
     new_device_defaults:
       track_new_devices: False
-  # Owntracks from mqtt
-  - platform: owntracks
-    max_gps_accuracy: 200
-    secret: !secret owntracks_payload
   # Network devices
   - platform: nmap_tracker
     hosts: 192.168.1.0/24
@@ -238,6 +234,11 @@ notify:
     name: hangouts
     default_conversations:
       - id: !secret conv_me
+
+# Owntracks over mqtt
+owntracks:
+  max_gps_accuracy: 200
+  secret: !secret owntracks_payload
 
 wemo:
   static:
