@@ -1,0 +1,11 @@
+# Customize lights
+light.discoagroup:
+  hidden: true
+light.discoagroupeven:
+  hidden: true
+light.discoagroupodd:
+  hidden: true
+light.quickhue_switch_lights:
+  hidden: true
+light.quickhue_switch_lights_2:
+  hidden: true
