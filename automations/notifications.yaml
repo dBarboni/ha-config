@@ -80,3 +80,37 @@
   - data:
       message: 'Basement sensor battery is at {{ states.sensor.basement_sensor_battery.state }}%. Change the battery soon.'
     service: notify.hangouts
+# Warn move car Tuesday if home
+- alias: Warn car Tues
+  initial_state: on
+  trigger:
+    platform: time
+    at: '11:30:00'
+  condition:
+  - condition: time
+    weekday:
+      - tue
+  - condition: state
+    entity_id: 'binary_sensor.my_presence'
+    state: 'on'
+  action:
+    service: notify.hangouts
+    data:
+      message: "It's Tuesday, move your car before noon!"
+# Warn move car Wednesday if home
+- alias: Warn car Weds
+  initial_state: on
+  trigger:
+    platform: time
+    at: '07:30:00'
+  condition:
+  - condition: time
+    weekday:
+      - wed
+  - condition: state
+    entity_id: 'binary_sensor.my_presence'
+    state: 'on'
+  action:
+    service: notify.hangouts
+    data:
+      message: "It's Wednesday, move your car before 8!"

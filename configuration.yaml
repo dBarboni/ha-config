@@ -101,6 +101,7 @@ binary_sensor:
   - platform: flic
   # Bayesian sensor for presence
   - platform: bayesian
+    name: my_presence
     prior: 0.5
     probability_threshold: 0.9
     observations:
