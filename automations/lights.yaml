@@ -45,3 +45,21 @@
       entity_id: light.ceiling
       brightness_pct: 1
     service: light.turn_on
+# Turn on porch light when arriving home if sun down
+- alias: Porch light on
+  initial_state: on
+  trigger:
+    platform: state
+    entity_id: !secret dan_phone_owntracks
+    to: 'home'
+  condition:
+    condition: sun
+    after: sunset
+  action:
+    - data:
+        entity_id: light.porch
+      service: light.turn_on
+    # temp - for debug
+    - data:
+        message: "Porch light turned on"
+      service: notify.hangouts
