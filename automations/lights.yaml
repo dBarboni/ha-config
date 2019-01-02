@@ -56,10 +56,10 @@
     condition: sun
     after: sunset
   action:
-    - data:
-        entity_id: light.porch
-      service: light.turn_on
-    # temp - for debug
-    - data:
-        message: "Porch light turned on"
-      service: notify.hangouts
+  - data:
+      entity_id: light.porch
+    service: light.turn_on
+  # temp - for debug
+  - data:
+      message: "Porch light turned on"
+    service: notify.hangouts
