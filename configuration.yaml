@@ -262,13 +262,6 @@ wemo:
 #        - "{room} lights {percent}%"
 #      conversations:
 #        - id: !secret conv_me
-#    HAVersion:
-#      sentences:
-#        - HA version
-#        - HASS version
-#        - Home Assistant version
-#      conversations:
-#        - id: !secret conv_me
 
 # Respond to phrases
 #intent_script:
@@ -289,11 +282,6 @@ wemo:
 #    - service: notify.telegram
 #      data_template:
 #        message: '{{ room }} lights set to {{ percent }}%!'
-#  HAVersion:
-#    action:
-#    - service: notify.telegram
-#      data_template:
-#        message: 'Your Home Assistant version is {{ states.sensor.current_version.state }}'
 
 # Shell commands
 # TODO: figure out why blink1-tool not executing without full path
