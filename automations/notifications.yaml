@@ -1,4 +1,4 @@
-# Notify hangouts when Raspberry Pi CPU temperature goes above 59C
+# Notify when Raspberry Pi CPU temperature goes above 59C
 - alias: Notify CPU hot
   initial_state: on
   trigger:
@@ -10,8 +10,8 @@
   - data:
       message: Raspberry Pi CPU temperature is {{ states.sensor.cpu_temperature.state
         }} C
-    service: notify.hangouts
-# Notify hangouts when Waze reports work travel time will be longer than 25 min
+    service: notify.telegram
+# Notify when Waze reports work travel time will be longer than 25 min
 - alias: Notify work travel time long
   initial_state: on
   trigger:
@@ -26,8 +26,8 @@
   - data:
       message: Travel time to work is {{ states.sensor.waze_travel_time.state }} minutes
         via {{ states.sensor.waze_travel_time.attributes.route }}!
-    service: notify.hangouts
-# Notify hangouts when Home Assistant update is available
+    service: notify.telegram
+# Notify when Home Assistant update is available
 - alias: Notify Home Assistant update available
   initial_state: on
   trigger:
@@ -43,20 +43,20 @@
       message: 'Home Assistant version {{ states.sensor.ha_upstream.state }} is available:
         https://github.com/home-assistant/home-assistant/releases/tag/{{ states.sensor.ha_upstream.state
         }}'
-    service: notify.hangouts
-# Notify hangouts when crime reported within 2 miles of home
+    service: notify.telegram
+# Notify when crime reported within 2 miles of home
 - alias: Notify crime report
   initial_state: on
   trigger:
   - platform: event
     event_type: crimereports_incident
   action:
-  - service: notify.hangouts
+  - service: notify.telegram
     data_template:
       message: '{{ trigger.event.data.type }} occured at {{ trigger.event.data.location
         }} at {{ trigger.event.data.timestamp }}. {{ trigger.event.data.description
         }}.'
-# Notify hangouts when Xiaomi humidity sensor reports above 65%
+# Notify when Xiaomi humidity sensor reports above 65%
 - alias: Notify humidity high
   initial_state: on
   trigger:
@@ -67,9 +67,9 @@
   action:
   - data:
       message: 'Basement humidity is {{ states.sensor.basement_sensor_humidity.state }}%! Check the dehumidifier.'
-    service: notify.hangouts
+    service: notify.telegram
   - service: shell_command.blink1_flash_red
-# Notify hangouts when Xiaomi humidity sensor battery drops below 20%
+# Notify when Xiaomi humidity sensor battery drops below 20%
 - alias: Notify humidity sensor battery low
   initial_state: on
   trigger:
@@ -79,7 +79,7 @@
   action:
   - data:
       message: 'Basement sensor battery is at {{ states.sensor.basement_sensor_battery.state }}%. Change the battery soon.'
-    service: notify.hangouts
+    service: notify.telegram
 # Warn move car Tuesday if home
 - alias: Warn car Tues
   initial_state: on
@@ -94,7 +94,7 @@
     entity_id: 'binary_sensor.my_presence'
     state: 'on'
   action:
-    service: notify.hangouts
+    service: notify.telegram
     data:
       message: "It's Tuesday, move your car before noon!"
 # Warn move car Wednesday if home
@@ -111,6 +111,6 @@
     entity_id: 'binary_sensor.my_presence'
     state: 'on'
   action:
-    service: notify.hangouts
+    service: notify.telegram
     data:
       message: "It's Wednesday, move your car before 8!"

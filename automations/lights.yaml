@@ -62,4 +62,4 @@
   # temp - for debug
   - data:
       message: "Porch light turned on"
-    service: notify.hangouts
+    service: notify.telegram

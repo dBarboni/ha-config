@@ -220,21 +220,24 @@ cloud:
         description: Waze travel time to work
 
 device_tracker:
-  # Bluetooth device tracker
- # - platform: bluetooth_tracker
- #   new_device_defaults:
- #     track_new_devices: False
   # Network devices
   - platform: nmap_tracker
     hosts: 192.168.1.0/24
     new_device_defaults:
       track_new_devices: True
 
+# Enable Telegram notifier
 notify:
-  - platform: hangouts
-    name: hangouts
-    default_conversations:
-      - id: !secret conv_me
+  - platform: telegram
+    name: telegram
+    chat_id: !secret telegram_chat_me
+
+# Connect to Telegram chat bot
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_key
+    allowed_chat_ids:
+      - !secret telegram_chat_me
 
 # Owntracks over mqtt
 owntracks:
@@ -247,50 +250,50 @@ wemo:
 
 # Control HA via Google Hangouts
 # Listen for phrases
-hangouts:
-  intents:
-    LightsOnOff:
-      sentences:
-        - "{room} lights {onoff}"
-      conversations:
-        - id: !secret conv_me
-    LightsPercent:
-      sentences:
-        - "{room} lights {percent}%"
-      conversations:
-        - id: !secret conv_me
-    HAVersion:
-      sentences:
-        - HA version
-        - HASS version
-        - Home Assistant version
-      conversations:
-        - id: !secret conv_me
+#hangouts:
+#  intents:
+#    LightsOnOff:
+#      sentences:
+#        - "{room} lights {onoff}"
+#      conversations:
+#        - id: !secret conv_me
+#    LightsPercent:
+#      sentences:
+#        - "{room} lights {percent}%"
+#      conversations:
+#        - id: !secret conv_me
+#    HAVersion:
+#      sentences:
+#        - HA version
+#        - HASS version
+#        - Home Assistant version
+#      conversations:
+#        - id: !secret conv_me
 
 # Respond to phrases
-intent_script:
-  LightsOnOff:
-    action:
-    - service_template: light.turn_{{ onoff }}
-      data_template:
-        entity_id: light.{{ room }}
-    - service: notify.hangouts
-      data_template:
-        message: 'Turning {{ onoff }} {{ room }} lights!'
-  LightsPercent:
-    action:
-    - service: light.turn_on
-      data_template:
-        entity_id: light.{{ room }}
-        brightness_pct: "{{ percent }}"
-    - service: notify.hangouts
-      data_template:
-        message: '{{ room }} lights set to {{ percent }}%!'
-  HAVersion:
-    action:
-    - service: notify.hangouts
-      data_template:
-        message: 'Your Home Assistant version is {{ states.sensor.current_version.state }}'
+#intent_script:
+#  LightsOnOff:
+#    action:
+#    - service_template: light.turn_{{ onoff }}
+#      data_template:
+#        entity_id: light.{{ room }}
+#    - service: notify.telegram
+#      data_template:
+#        message: 'Turning {{ onoff }} {{ room }} lights!'
+#  LightsPercent:
+#    action:
+#    - service: light.turn_on
+#      data_template:
+#        entity_id: light.{{ room }}
+#        brightness_pct: "{{ percent }}"
+#    - service: notify.telegram
+#      data_template:
+#        message: '{{ room }} lights set to {{ percent }}%!'
+#  HAVersion:
+#    action:
+#    - service: notify.telegram
+#      data_template:
+#        message: 'Your Home Assistant version is {{ states.sensor.current_version.state }}'
 
 # Shell commands
 # TODO: figure out why blink1-tool not executing without full path
