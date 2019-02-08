@@ -252,11 +252,6 @@ wemo:
 # Listen for phrases
 #hangouts:
 #  intents:
-#    LightsOnOff:
-#      sentences:
-#        - "{room} lights {onoff}"
-#      conversations:
-#        - id: !secret conv_me
 #    LightsPercent:
 #      sentences:
 #        - "{room} lights {percent}%"
@@ -265,14 +260,6 @@ wemo:
 
 # Respond to phrases
 #intent_script:
-#  LightsOnOff:
-#    action:
-#    - service_template: light.turn_{{ onoff }}
-#      data_template:
-#        entity_id: light.{{ room }}
-#    - service: notify.telegram
-#      data_template:
-#        message: 'Turning {{ onoff }} {{ room }} lights!'
 #  LightsPercent:
 #    action:
 #    - service: light.turn_on

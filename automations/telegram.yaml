@@ -12,7 +12,7 @@
         message: 'Available commands are: '
         data:
           keyboard:
-            - '/getversion'
+            - '/version, /lights'
 
 # Get Home Assistant version
 - alias: 'Get HASS Version'
@@ -20,8 +20,23 @@
     platform: event
     event_type: telegram_command
     event_data:
-      command: '/getversion'
+      command: '/version'
   action:
     - service: notify.telegram
       data_template:
         message: "Your Home Assistant version is {{ states.sensor.current_version.state }}"
+
+# Toggle lights
+- alias: 'Set lights'
+  trigger:
+    platform: event
+    event_type: telegram_command
+    event_data:
+      command: '/lights'
+  action:
+    - service_template: light.turn_{{ trigger.event.data["args"][1] }}
+      data_template:
+        entity_id: light.{{ trigger.event.data["args"][0] }}
+    - service: notify.telegram
+      data_template:
+        message: 'Turning the {{ trigger.event.data["args"][0] }} lights {{ trigger.event.data["args"][1] }}!' 
