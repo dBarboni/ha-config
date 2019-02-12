@@ -12,7 +12,7 @@
         message: 'Available commands are: '
         data:
           keyboard:
-            - '/version, /lights'
+            - '/version, /lights, /lightspct'
 
 # Get Home Assistant version
 - alias: 'Get HASS Version'
@@ -25,6 +25,27 @@
     - service: notify.telegram
       data_template:
         message: "Your Home Assistant version is {{ states.sensor.current_version.state }}"
+
+# Set lights percent
+- alias: 'Lights percent'
+  trigger:
+    platform: event
+    event_type: telegram_command
+    event_data:
+      command: '/lightspct'
+  action:
+    - service: light.turn_on
+      data_template:
+        entity_id: light.{{ trigger.event.data["args"][0] }}
+        brightness_pct: >
+          {% if '%' in trigger.event.data["args"][1] %}
+            {{ trigger.event.data["args"][1].split("%")[0] }}
+          {% else %}
+            {{ trigger.event.data["args"][1] }}
+          {% endif %}
+    - service: notify.telegram
+      data_template:
+        message: 'Setting the {{ trigger.event.data["args"][0] }} lights to {{ trigger.event.data["args"][1] }}!' 
 
 # Toggle lights
 - alias: 'Set lights'
