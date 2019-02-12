@@ -110,11 +110,6 @@ binary_sensor:
         prob_given_false: 0.4
         platform: 'state'
         to_state: 'home'
-     # - entity_id: !secret dan_phone_bt
-     #   prob_given_true: 0.9
-     #   prob_given_false: 0.1
-     #   platform: 'state'
-     #   to_state: 'home'
       - entity_id: !secret dan_phone_nmap
         prob_given_true: 0.9
         prob_given_false: 0.1
@@ -247,28 +242,6 @@ owntracks:
 wemo:
   static:
     - !secret ip_wemo
-
-# Control HA via Google Hangouts
-# Listen for phrases
-#hangouts:
-#  intents:
-#    LightsPercent:
-#      sentences:
-#        - "{room} lights {percent}%"
-#      conversations:
-#        - id: !secret conv_me
-
-# Respond to phrases
-#intent_script:
-#  LightsPercent:
-#    action:
-#    - service: light.turn_on
-#      data_template:
-#        entity_id: light.{{ room }}
-#        brightness_pct: "{{ percent }}"
-#    - service: notify.telegram
-#      data_template:
-#        message: '{{ room }} lights set to {{ percent }}%!'
 
 # Shell commands
 # TODO: figure out why blink1-tool not executing without full path
