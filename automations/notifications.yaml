@@ -2,7 +2,7 @@
 - alias: Notify CPU hot
   initial_state: on
   trigger:
-  - above: '59'
+  - above: '65'
     entity_id: sensor.cpu_temperature
     platform: numeric_state
   condition: []
