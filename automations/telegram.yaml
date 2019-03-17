@@ -12,7 +12,7 @@
         message: 'Available commands are: '
         data:
           keyboard:
-            - '/version, /lights, /lightspct'
+            - '/version, /light'
 
 # Get Home Assistant version
 - alias: 'Get HASS Version'
@@ -26,13 +26,22 @@
       data_template:
         message: "Your Home Assistant version is {{ states.sensor.current_version.state }}"
 
-# Set lights percent
-- alias: 'Lights percent'
+# Set light percent
+- alias: 'Set light percent'
   trigger:
     platform: event
     event_type: telegram_command
     event_data:
-      command: '/lightspct'
+      command: '/light'
+  condition:
+    condition: template
+    # Check if argument contains percent symbol or is number in valid range
+    value_template: >
+      {% if ("%" in trigger.event.data["args"][1]) or ((trigger.event.data["args"][1] | int > 0) and (trigger.event.data["args"][1] | int <= 100)) %}
+        true
+      {% else %}
+        false
+      {% endif %}
   action:
     - service: light.turn_on
       data_template:
@@ -47,13 +56,22 @@
       data_template:
         message: 'Setting the {{ trigger.event.data["args"][0] }} lights to {{ trigger.event.data["args"][1] }}!' 
 
-# Toggle lights
-- alias: 'Set lights'
+# Toggle light on or off
+- alias: 'Set light on off'
   trigger:
     platform: event
     event_type: telegram_command
     event_data:
-      command: '/lights'
+      command: '/light'
+  condition:
+    condition: template
+    # Check if argument is equal to on or off
+    value_template: >
+      {% if (trigger.event.data["args"][1] == "on") or (trigger.event.data["args"][1] == "off")  %}
+        true
+      {% else %}
+        false
+      {% endif %}
   action:
     - service_template: light.turn_{{ trigger.event.data["args"][1] }}
       data_template:
