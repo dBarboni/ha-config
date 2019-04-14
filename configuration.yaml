@@ -184,6 +184,9 @@ sensor:
       - temperature
       - humidity
       - battery
+  - platform: time_date
+    display_options:
+      - 'time_utc'
 
 # Text to speech
 tts:

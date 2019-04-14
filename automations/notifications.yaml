@@ -114,3 +114,15 @@
     service: notify.telegram
     data:
       message: "It's Wednesday, move your car before 8!"
+
+# Publish room temp and timestamp to MQTT every 20 min
+- alias: Canary
+  initial_state: on
+  trigger:
+    platform: time_pattern
+    minutes: '/20'
+  action:
+    service: mqtt.publish
+    data:
+      topic: 'home-assistant/canary'
+      payload_template: " \"Temperature\":  \"{{states('sensor.basement_sensor_temperature')}}\", \"Time\": \"{{states('sensor.time_utc')}}\" "
