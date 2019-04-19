@@ -261,6 +261,9 @@ mqtt:
   port: !secret mqtt_port
   username: !secret mqtt_user
   password: !secret mqtt_pass
+  will_message:
+    topic: 'home-assistant/lwt'
+    payload: 'OFFLINE'
 
 group: !include groups.yaml
 automation: !include_dir_merge_list automations
