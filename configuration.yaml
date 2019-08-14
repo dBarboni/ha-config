@@ -178,10 +178,19 @@ sensor:
     scan_interval: 3600
   # Current home assistant version
   - platform: version
-  # Xiaomi humidity and temp sensor
+  # Xiaomi humidity and temp sensors
   - platform: mitemp_bt
     name: Basement Sensor
-    mac: !secret mac_sensor_xiaomi
+    mac: !secret mac_sensor_xiaomi_basement
+    median: 3
+    adapter: hci1
+    monitored_conditions:
+      - temperature
+      - humidity
+      - battery
+  - platform: mitemp_bt
+    name: Bedroom Sensor
+    mac: !secret mac_sensor_xiaomi_bedroom
     median: 3
     adapter: hci1
     monitored_conditions:

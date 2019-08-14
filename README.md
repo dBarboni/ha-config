@@ -43,8 +43,9 @@ ip_desktop:
 ip_wemo:
 
 # MAC addresses
-## Xiaomi temp/humidity sensor
-mac_sensor_xiaomi:
+## Xiaomi temp/humidity sensors
+mac_sensor_xiaomi_basement:
+mac_sensor_xiaomi_bedroom:
 
 # Telegram
 telegram_chat_me:
