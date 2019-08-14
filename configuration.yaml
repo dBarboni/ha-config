@@ -87,6 +87,10 @@ recorder:
       - sensor.owm_wind_speed
       - sensor.waze_travel_time
 
+# Reduce SD card wear
+logger:
+  default: error
+
 # View all events in a logbook
 logbook:
 
