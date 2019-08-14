@@ -64,6 +64,9 @@ mqtt_pass:
 # Flic buttons
 flic_bedroom:
 
+# Home Assistant Community Store (HACS) - Github token
+hacs_token:
+
 ```
 ### Flic service
 

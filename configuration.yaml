@@ -278,6 +278,10 @@ mqtt:
     topic: 'home-assistant/lwt'
     payload: 'OFFLINE'
 
+# Home Assistant Community Store component
+hacs:
+  token: !secret hacs_token
+
 group: !include groups.yaml
 automation: !include_dir_merge_list automations
 script: !include scripts.yaml
