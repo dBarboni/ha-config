@@ -74,11 +74,13 @@
   initial_state: on
   trigger:
   - below: '20'
-    entity_id: sensor.basement_sensor_battery
+    entity_id:
+      - sensor.basement_sensor_battery
+      - sensor.bedroom_sensor_battery
     platform: numeric_state
   action:
-  - data:
-      message: 'Basement sensor battery is at {{ states.sensor.basement_sensor_battery.state }}%. Change the battery soon.'
+  - data_template:
+      message: '{{ trigger.from_state.attributes.friendly_name }} is at {{ trigger.to_state.state }}%. Change the battery soon.'
     service: notify.telegram
 # Warn move car Tuesday if home
 - alias: Warn car Tues
