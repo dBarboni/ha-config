@@ -70,3 +70,8 @@ hacs_token:
 ```
 ### Flic service
 
+### Home Assistant Community Store (HACS)
+Install according to [these](https://custom-components.github.io/hacs/installation/manual/) instructions.
+
+### ha-wyzesense
+Install according to [these](https://github.com/kevinvincent/ha-wyzesense) instructions using the HACS method.

@@ -121,6 +121,8 @@ binary_sensor:
         to_state: 'home'
   - platform: uptimerobot
     api_key: !secret key_uptime
+  - platform: wyzesense
+    device: "/dev/hidraw0"
 
 # Sensors
 sensor:
