@@ -56,7 +56,7 @@
       message: '{{ trigger.event.data.type }} occured at {{ trigger.event.data.location
         }} at {{ trigger.event.data.timestamp }}. {{ trigger.event.data.description
         }}.'
-# Notify when Xiaomi humidity sensor reports above 65%
+# Notify when basement Xiaomi humidity sensor reports above 65%
 - alias: Notify humidity high
   initial_state: on
   trigger:
@@ -69,6 +69,21 @@
       message: 'Basement humidity is {{ states.sensor.basement_sensor_humidity.state }}%! Check the dehumidifier.'
     service: notify.telegram
   - service: shell_command.blink1_flash_red
+# Notify when bedroom Xiaomi temperature sensor reports above 25c when im not home
+- alias: Notify temperature high
+  initial_state: on
+  trigger:
+  - above: '25'
+    entity_id: sensor.bedroom_sensor_temperature
+    platform: numeric_state
+  condition:
+    - condition: state
+      entity_id: binary_sensor.my_presence
+      state: 'off'
+  action:
+    service: notify.telegram
+    data_template:
+      message: Bedroom temperature is {{ states.sensor.bedroom_sensor_temperature.state }}{{ states.sensor.bedroom_sensor_temperature.attributes.unit_of_measurement }}!
 # Notify when Xiaomi humidity sensor battery drops below 20%
 - alias: Notify humidity sensor battery low
   initial_state: on
@@ -127,4 +142,4 @@
     service: mqtt.publish
     data:
       topic: 'home-assistant/canary'
-      payload_template: " \"Temperature\":  \"{{states('sensor.basement_sensor_temperature')}}\", \"Time\": \"{{states('sensor.time_utc')}}\" "
+      payload_template: " \"Temperature\":  \"{{states('sensor.bedroom_sensor_temperature')}}\", \"Time\": \"{{states('sensor.time_utc')}}\" "
