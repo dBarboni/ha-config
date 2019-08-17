@@ -22,7 +22,7 @@ long_work:
 address_work:
 
 # Devices for device tracker
-my_phone_owntracks:
+my_phone_life360:
 my_phone_nmap:
 
 # API keys
@@ -51,10 +51,6 @@ mac_sensor_xiaomi_bedroom:
 telegram_chat_me:
 telegram_key:
 
-# Owntracks
-## Payload encryption key
-owntracks_payload:
-
 # MQTT
 mqtt_server:
 mqtt_port:
@@ -68,6 +64,9 @@ flic_bedroom:
 hacs_token:
 
 ```
+### Life360
+Configure integration in the Home Assistant frontend.
+
 ### Flic service
 
 ### Home Assistant Community Store (HACS)

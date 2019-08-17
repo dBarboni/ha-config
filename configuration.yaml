@@ -109,7 +109,7 @@ binary_sensor:
     prior: 0.5
     probability_threshold: 0.9
     observations:
-      - entity_id: !secret my_phone_owntracks
+      - entity_id: !secret my_phone_life360
         prob_given_true: 0.9
         prob_given_false: 0.4
         platform: 'state'
@@ -237,7 +237,7 @@ device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.1.0/24
     new_device_defaults:
-      track_new_devices: True
+      track_new_devices: False
 
 # Enable Telegram notifier
 notify:
@@ -252,10 +252,9 @@ telegram_bot:
     allowed_chat_ids:
       - !secret telegram_chat_me
 
-# Owntracks over mqtt
-owntracks:
+# Life360 device tracker
+life360:
   max_gps_accuracy: 200
-  secret: !secret owntracks_payload
 
 wemo:
   static:
