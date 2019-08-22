@@ -59,6 +59,9 @@
         after: sunset
       - condition: sun
         before: sunrise
+      - condition: state
+        entity_id: 'light.porch'
+        state: 'off'
   action:
   - data:
       entity_id: light.porch
