@@ -63,6 +63,9 @@ flic_bedroom:
 # Home Assistant Community Store (HACS) - Github token
 hacs_token:
 
+# Wyze sensors
+wyze_motion_hall:
+
 ```
 ### Life360
 Configure integration in the Home Assistant frontend.

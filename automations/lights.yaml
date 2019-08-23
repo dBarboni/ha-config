@@ -53,12 +53,11 @@
     entity_id: binary_sensor.my_presence
     to: 'on'
   condition:
-    condition: or
+    condition: and
     conditions:
-      - condition: sun
-        after: sunset
-      - condition: sun
-        before: sunrise
+      - condition: state
+        entity_id: 'sun.sun'
+        state: 'below_horizon'
       - condition: state
         entity_id: 'light.porch'
         state: 'off'
@@ -70,3 +69,30 @@
   - data:
       message: "Porch light turned on"
     service: notify.telegram
+# Turn on hall light if motion detected and sun is down
+- alias: Hall nightlight
+  initial_state: on
+  trigger:
+    platform: state
+    entity_id: !secret wyze_motion_hall
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: 'sun.sun'
+        state: 'below_horizon'
+      - condition: state
+        entity_id: 'light.hallway'
+        state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: light.hallway
+      brightness_pct: 20
+      transition: 3
+  - delay: 00:00:30
+  - service: light.turn_off
+    data:
+      entity_id: light.hallway
+      transition: 3
