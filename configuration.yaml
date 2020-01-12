@@ -68,6 +68,7 @@ history:
       - sensor.owm_temperature
       - sensor.owm_wind_speed
       - sensor.waze_travel_time
+      - sensor.time_utc
 
 # Configure saving of history data
 recorder:

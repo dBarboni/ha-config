@@ -143,3 +143,17 @@
     data:
       topic: 'home-assistant/canary'
       payload_template: " \"Temperature\":  \"{{states('sensor.bedroom_sensor_temperature')}}\", \"Time\": \"{{states('sensor.time_utc')}}\" "
+
+# Warn if mailbox left open
+- alias: Mailbox left open
+  initial_state: on
+  trigger:
+    platform: state
+    entity_id: !secret wyze_door_mailbox
+    to: 'on'
+    for:
+      minutes: 1
+  action:
+    - service: notify.telegram
+      data:
+        message: "Mailbox has been left open."
