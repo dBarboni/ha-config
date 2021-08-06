@@ -1,3 +1,5 @@
+# NOTE: this is no longer maintained as I have implemented another backup solution
+
 # ha-config
 Backup for my Home Assistant configuration
 
